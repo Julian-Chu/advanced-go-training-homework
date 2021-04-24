@@ -14,7 +14,7 @@ func NewStore(db *sql.DB) *Store {
 	return &Store{db: db}
 }
 
-var ErrUserNotFound = errors.New("user not found")
+var ErrNotFound = errors.New("user not found")
 
 func (s Store) QueryUserByEmail(ctx context.Context, email string) (User, error)  {
 	var user User
@@ -24,7 +24,7 @@ func (s Store) QueryUserByEmail(ctx context.Context, email string) (User, error)
 		// don't return sql.ErrorNoRows or it wrapped error because it's not a real  database error
 		// should use custom error for business logic level
 		if err == sql.ErrNoRows{
-			return User{}, ErrUserNotFound
+			return User{}, ErrNotFound
 		}
 		return User{}, err
 	}
