@@ -10,7 +10,7 @@ if err !=nil{
     // don't return sql.ErrorNoRows or it wrapped error because it's not a real database error
     // recommend to use custom error for business logic level
     if err == sql.ErrNoRows{
-        return User{}, ErrUserNotFound
+        return User{}, ErrNotFound
     }
     return User{}, err
 }
