@@ -26,12 +26,18 @@ func main() {
 
 	g.Go(func() error {
 		log.Printf("starting srv1 on %s\n", srv1.Addr)
-		return fmt.Errorf("srv1:%w", srv1.ListenAndServe())
+		if err:= srv1.ListenAndServe(); !errors.Is(err, http.ErrServerClosed){
+			return fmt.Errorf("srv1:%w", err)
+		}
+		return nil
 	})
 
 	g.Go(func() error {
 		log.Printf("starting srv2 on %s\n", srv2.Addr)
-		return fmt.Errorf("srv2:%w", srv2.ListenAndServe())
+		if err:= srv2.ListenAndServe(); !errors.Is(err, http.ErrServerClosed){
+			return fmt.Errorf("srv2:%w", err)
+		}
+		return nil
 	})
 
 	g.Go(func() error {
@@ -69,7 +75,10 @@ func main() {
 	})
 
 	if err := g.Wait(); err != nil && !errors.Is(err, context.Canceled) {
-		close(shutdown)
+		_, notClosed := <- shutdown
+		if notClosed{
+			close(shutdown)
+		}
 		log.Printf("%s\n", err.Error())
 		return
 	}
