@@ -9,7 +9,7 @@ import (
 var ProviderSet = wire.NewSet(NewTodoUsecase)
 
 type Todo struct {
-	Id        int64
+	ID        int64
 	Content   string
 	Timestamp time.Time
 }
