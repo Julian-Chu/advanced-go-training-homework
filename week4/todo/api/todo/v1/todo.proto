@@ -9,27 +9,36 @@ option java_multiple_files = true;
 option java_package = "api.todo.v1";
 
 service TodoService {
-    rpc CreateTodo (CreateTodoRequest) returns (CreateTodoReply);
-    rpc DeleteTodo (DeleteTodoRequest) returns (DeleteTodoReply);
-    rpc ListTodo (ListTodoRequest) returns (ListTodoReply);
+  rpc CreateTodo (CreateTodoRequest) returns (CreateTodoReply){
+      option(google.api.http) ={
+      post:"/todos",
+        body:"*"
+        };
+  }
+  rpc DeleteTodo (DeleteTodoRequest) returns (DeleteTodoReply);
+  rpc ListTodo (ListTodoRequest) returns (ListTodoReply){
+    option(google.api.http) = {
+      get: "/todos"
+    };
+  };
 }
 
 message CreateTodoRequest {
-    string todo = 1;
+  string todo = 1;
 }
 message CreateTodoReply {}
 
 message DeleteTodoRequest {
-    int64 id = 1;
+  int64 id = 1;
 }
 message DeleteTodoReply {}
 
 message Todo{
-    int64 id = 1;
-    string content = 2;
+  int64 id = 1;
+  string content = 2;
 }
 
 message ListTodoRequest {}
 message ListTodoReply {
-    repeated Todo todos = 1;
+  repeated Todo todos = 1;
 }

@@ -34,7 +34,7 @@ func NewTodoServiceHandler(srv TodoServiceHandler, opts ...http1.HandleOption) h
 	}
 	r := mux.NewRouter()
 
-	r.HandleFunc("/api.todo.v1.TodoService/CreateTodo", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/todos", func(w http.ResponseWriter, r *http.Request) {
 		var in CreateTodoRequest
 		if err := h.Decode(r, &in); err != nil {
 			h.Error(w, r, err)
@@ -82,7 +82,7 @@ func NewTodoServiceHandler(srv TodoServiceHandler, opts ...http1.HandleOption) h
 		}
 	}).Methods("POST")
 
-	r.HandleFunc("/api.todo.v1.TodoService/ListTodo", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/todos", func(w http.ResponseWriter, r *http.Request) {
 		var in ListTodoRequest
 		if err := h.Decode(r, &in); err != nil {
 			h.Error(w, r, err)
@@ -104,7 +104,7 @@ func NewTodoServiceHandler(srv TodoServiceHandler, opts ...http1.HandleOption) h
 		if err := h.Encode(w, r, reply); err != nil {
 			h.Error(w, r, err)
 		}
-	}).Methods("POST")
+	}).Methods("GET")
 
 	return r
 }

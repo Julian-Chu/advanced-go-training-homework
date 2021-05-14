@@ -7,13 +7,13 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	v1 "todo/api/helloworld/v1"
+	v1 "todo/api/todo/v1"
 	"todo/internal/conf"
 	"todo/internal/service"
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, todosvc *service.TodoService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{}
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))
@@ -32,6 +32,6 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 			logging.Server(logger),
 		),
 	)
-	srv.HandlePrefix("/", v1.NewGreeterHandler(greeter, m))
+	srv.HandlePrefix("/", v1.NewTodoServiceHandler(todosvc, m))
 	return srv
 }
