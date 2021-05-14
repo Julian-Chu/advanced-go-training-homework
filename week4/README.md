@@ -20,3 +20,8 @@ curl -X POST -H "Content-Type: application/json" -d '{"todo":"test"}' http://127
 url http://127.0.0.1:8000/todos
 ```
 
+`delete`:
+```shell
+curl -X DELETE http://127.0.0.1:8000/todos/1
+```
+

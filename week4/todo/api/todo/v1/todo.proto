@@ -15,7 +15,11 @@ service TodoService {
         body:"*"
         };
   }
-  rpc DeleteTodo (DeleteTodoRequest) returns (DeleteTodoReply);
+  rpc DeleteTodo (DeleteTodoRequest) returns (DeleteTodoReply){
+    option(google.api.http) = {
+      delete: "/todos/{id}"
+    };
+  };
   rpc ListTodo (ListTodoRequest) returns (ListTodoReply){
     option(google.api.http) = {
       get: "/todos"

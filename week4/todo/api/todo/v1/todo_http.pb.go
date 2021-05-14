@@ -58,9 +58,14 @@ func NewTodoServiceHandler(srv TodoServiceHandler, opts ...http1.HandleOption) h
 		}
 	}).Methods("POST")
 
-	r.HandleFunc("/api.todo.v1.TodoService/DeleteTodo", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/todos/{id}", func(w http.ResponseWriter, r *http.Request) {
 		var in DeleteTodoRequest
 		if err := h.Decode(r, &in); err != nil {
+			h.Error(w, r, err)
+			return
+		}
+
+		if err := binding.MapProto(&in, mux.Vars(r)); err != nil {
 			h.Error(w, r, err)
 			return
 		}
@@ -80,7 +85,7 @@ func NewTodoServiceHandler(srv TodoServiceHandler, opts ...http1.HandleOption) h
 		if err := h.Encode(w, r, reply); err != nil {
 			h.Error(w, r, err)
 		}
-	}).Methods("POST")
+	}).Methods("DELETE")
 
 	r.HandleFunc("/todos", func(w http.ResponseWriter, r *http.Request) {
 		var in ListTodoRequest

@@ -21,6 +21,7 @@ func (s *TodoService) CreateTodo(ctx context.Context, req *pb.CreateTodoRequest)
 	return &pb.CreateTodoReply{}, nil
 }
 func (s *TodoService) DeleteTodo(ctx context.Context, req *pb.DeleteTodoRequest) (*pb.DeleteTodoReply, error) {
+	s.todo.DeleteTodo(req.Id)
 	return &pb.DeleteTodoReply{}, nil
 }
 func (s *TodoService) ListTodo(ctx context.Context, req *pb.ListTodoRequest) (*pb.ListTodoReply, error) {
