@@ -1,4 +1,4 @@
-# Week4
+# Week4 Create todo service by kratos
 
 ## start server
 ```shell
@@ -22,6 +22,6 @@ url http://127.0.0.1:8000/todos
 
 `delete`:
 ```shell
-curl -X DELETE http://127.0.0.1:8000/todos/1
+curl -X DELETE http://127.0.0.1:8000/todos/{id}
 ```
 
