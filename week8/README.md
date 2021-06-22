@@ -1,4 +1,5 @@
-# Redis
+# Week8 Homework
+## Redis
 ```shell
 sudo docker run --name my-redis -p 6379:6379 -d redis
 sudo docker exec -it my-redis sh
@@ -17,7 +18,7 @@ MEMORY USAGE <key> SAMPLES <count>
 INFO MEMORY
 ```
 
-# Part1 
+## Part1 
 redis-benchmark
 ```shell
 redis-benchmark  -q -d 10
