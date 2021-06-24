@@ -45,6 +45,30 @@ func Encode(p Protocol) []byte {
 		offset += SeqIdSize
 		copy(buf[offset:], p.Body)
 	}
-
 	return buf
+}
+
+func Decode(buf []byte) Protocol {
+	p := Protocol{}
+	start := 0
+	end := packLenSize
+	p.PackLen = binary.BigEndian.Uint32(buf[start:end])
+	start = end
+	end += headerLenSize
+	p.HeaderLen = binary.BigEndian.Uint16(buf[start:end])
+	start = end
+	end += verSize
+	p.Ver = binary.BigEndian.Uint16(buf[start:end])
+	start = end
+	end += opSize
+	p.Op = binary.BigEndian.Uint32(buf[start:end])
+	start = end
+	end += SeqIdSize
+	p.SeqId = binary.BigEndian.Uint32(buf[start:end])
+	bodySize := p.PackLen - uint32(p.HeaderLen)
+	if bodySize > 0 {
+		p.Body = make([]byte, bodySize)
+		copy(p.Body, buf[end:])
+	}
+	return p
 }
