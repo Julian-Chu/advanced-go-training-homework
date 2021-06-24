@@ -11,6 +11,15 @@ type Protocol struct {
 	Body      []byte
 }
 
+func CreateProto(ver uint16, op uint32, seqId uint32, body []byte) Protocol {
+	headerSize := packLenSize + headerLenSize + verSize + opSize + SeqIdSize
+	packLen := headerSize
+	if body != nil {
+		packLen += len(body)
+	}
+	return Protocol{PackLen: uint32(packLen), HeaderLen: uint16(headerSize), Ver: ver, Op: op, SeqId: seqId, Body: body}
+}
+
 const (
 	packLenSize   = 4
 	headerLenSize = 2
