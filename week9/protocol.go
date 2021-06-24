@@ -19,10 +19,9 @@ const (
 	SeqIdSize     = 4
 )
 
-func NewProtocol(ver uint16, op uint32, seqId uint32, message string) *Protocol {
-
-	return &Protocol{Ver: ver, Op: op, SeqId: seqId, Body: []byte(message)}
-}
+//func NewProtocol(ver uint16, op uint32, seqId uint32, message string) *Protocol {
+//	return &Protocol{Ver: ver, Op: op, SeqId: seqId, Body: []byte(message)}
+//}
 
 func Encode(p Protocol) []byte {
 	headerSize := packLenSize + headerLenSize + verSize + opSize + SeqIdSize
