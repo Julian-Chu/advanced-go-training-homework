@@ -3,21 +3,14 @@ package week9
 import "encoding/binary"
 
 type Protocol struct {
-	PackLen   uint32
-	HeaderLen uint16
-	Ver       uint16
-	Op        uint32
-	SeqId     uint32
-	Body      []byte
+	Ver   uint16
+	Op    uint32
+	SeqId uint32
+	Body  []byte
 }
 
 func NewProto(ver uint16, op uint32, seqId uint32, body []byte) *Protocol {
-	headerSize := packLenSize + headerLenSize + verSize + opSize + seqIdSize
-	packLen := headerSize
-	if body != nil {
-		packLen += len(body)
-	}
-	return &Protocol{PackLen: uint32(packLen), HeaderLen: uint16(headerSize), Ver: ver, Op: op, SeqId: seqId, Body: body}
+	return &Protocol{Ver: ver, Op: op, SeqId: seqId, Body: body}
 }
 
 const (
@@ -39,13 +32,13 @@ const (
 )
 
 func (p Protocol) Encode() []byte {
-	bufSize := headerSize
+	var packLen uint32 = headerSize
 	if p.Body != nil {
-		bufSize += len(p.Body)
+		packLen += uint32(len(p.Body))
 	}
-	buf := make([]byte, bufSize)
-	binary.BigEndian.PutUint32(buf[packLenOffset:], p.PackLen)
-	binary.BigEndian.PutUint16(buf[headerLenOffset:], p.HeaderLen)
+	buf := make([]byte, packLen)
+	binary.BigEndian.PutUint32(buf[packLenOffset:], packLen)
+	binary.BigEndian.PutUint16(buf[headerLenOffset:], headerSize)
 	binary.BigEndian.PutUint16(buf[verOffset:], p.Ver)
 	binary.BigEndian.PutUint32(buf[opOffset:], p.Op)
 	binary.BigEndian.PutUint32(buf[seqIdOffset:], p.SeqId)
@@ -56,12 +49,11 @@ func (p Protocol) Encode() []byte {
 }
 
 func (p *Protocol) Decode(buf []byte) {
-	p.PackLen = binary.BigEndian.Uint32(buf[packLenOffset:headerLenOffset])
-	p.HeaderLen = binary.BigEndian.Uint16(buf[headerLenOffset:verOffset])
+	packLen := binary.BigEndian.Uint32(buf[packLenOffset:headerLenOffset])
 	p.Ver = binary.BigEndian.Uint16(buf[verOffset:opOffset])
 	p.Op = binary.BigEndian.Uint32(buf[opOffset:seqIdOffset])
 	p.SeqId = binary.BigEndian.Uint32(buf[seqIdOffset:bodyOffset])
-	bodySize := p.PackLen - uint32(p.HeaderLen)
+	bodySize := packLen - uint32(headerSize)
 	if bodySize > 0 {
 		p.Body = make([]byte, bodySize)
 		copy(p.Body, buf[bodyOffset:])
