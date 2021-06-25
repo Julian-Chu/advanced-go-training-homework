@@ -12,7 +12,7 @@ type Protocol struct {
 }
 
 func CreateProto(ver uint16, op uint32, seqId uint32, body []byte) Protocol {
-	headerSize := packLenSize + headerLenSize + verSize + opSize + SeqIdSize
+	headerSize := packLenSize + headerLenSize + verSize + opSize + seqIdSize
 	packLen := headerSize
 	if body != nil {
 		packLen += len(body)
@@ -25,7 +25,17 @@ const (
 	headerLenSize = 2
 	verSize       = 2
 	opSize        = 4
-	SeqIdSize     = 4
+	seqIdSize     = 4
+	headerSize    = packLenSize + headerLenSize + verSize + opSize + seqIdSize
+)
+
+const (
+	packLenOffset   = 0
+	headerLenOffset = packLenOffset + packLenSize
+	verOffset       = headerLenOffset + headerLenSize
+	opOffset        = verOffset + verSize
+	seqIdOffset     = opOffset + opSize
+	bodyOffset      = seqIdOffset + seqIdSize
 )
 
 //func NewProtocol(ver uint16, op uint32, seqId uint32, message string) *Protocol {
@@ -33,50 +43,33 @@ const (
 //}
 
 func Encode(p Protocol) []byte {
-	headerSize := packLenSize + headerLenSize + verSize + opSize + SeqIdSize
 	bufSize := headerSize
 	if p.Body != nil {
 		bufSize += len(p.Body)
 	}
 	buf := make([]byte, bufSize)
-	offset := 0
-	binary.BigEndian.PutUint32(buf[offset:], p.PackLen)
-	offset += packLenSize
-	binary.BigEndian.PutUint16(buf[offset:], p.HeaderLen)
-	offset += headerLenSize
-	binary.BigEndian.PutUint16(buf[offset:], p.Ver)
-	offset += verSize
-	binary.BigEndian.PutUint32(buf[offset:], p.Op)
-	offset += opSize
-	binary.BigEndian.PutUint32(buf[offset:], p.SeqId)
+	binary.BigEndian.PutUint32(buf[packLenOffset:], p.PackLen)
+	binary.BigEndian.PutUint16(buf[headerLenOffset:], p.HeaderLen)
+	binary.BigEndian.PutUint16(buf[verOffset:], p.Ver)
+	binary.BigEndian.PutUint32(buf[opOffset:], p.Op)
+	binary.BigEndian.PutUint32(buf[seqIdOffset:], p.SeqId)
 	if p.Body != nil {
-		offset += SeqIdSize
-		copy(buf[offset:], p.Body)
+		copy(buf[bodyOffset:], p.Body)
 	}
 	return buf
 }
 
 func Decode(buf []byte) Protocol {
 	p := Protocol{}
-	start := 0
-	end := packLenSize
-	p.PackLen = binary.BigEndian.Uint32(buf[start:end])
-	start = end
-	end += headerLenSize
-	p.HeaderLen = binary.BigEndian.Uint16(buf[start:end])
-	start = end
-	end += verSize
-	p.Ver = binary.BigEndian.Uint16(buf[start:end])
-	start = end
-	end += opSize
-	p.Op = binary.BigEndian.Uint32(buf[start:end])
-	start = end
-	end += SeqIdSize
-	p.SeqId = binary.BigEndian.Uint32(buf[start:end])
+	p.PackLen = binary.BigEndian.Uint32(buf[packLenOffset:headerLenOffset])
+	p.HeaderLen = binary.BigEndian.Uint16(buf[headerLenOffset:verOffset])
+	p.Ver = binary.BigEndian.Uint16(buf[verOffset:opOffset])
+	p.Op = binary.BigEndian.Uint32(buf[opOffset:seqIdOffset])
+	p.SeqId = binary.BigEndian.Uint32(buf[seqIdOffset:bodyOffset])
 	bodySize := p.PackLen - uint32(p.HeaderLen)
 	if bodySize > 0 {
 		p.Body = make([]byte, bodySize)
-		copy(p.Body, buf[end:])
+		copy(p.Body, buf[bodyOffset:])
 	}
 	return p
 }
