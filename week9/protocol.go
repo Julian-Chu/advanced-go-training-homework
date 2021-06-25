@@ -11,13 +11,13 @@ type Protocol struct {
 	Body      []byte
 }
 
-func CreateProto(ver uint16, op uint32, seqId uint32, body []byte) Protocol {
+func NewProto(ver uint16, op uint32, seqId uint32, body []byte) *Protocol {
 	headerSize := packLenSize + headerLenSize + verSize + opSize + seqIdSize
 	packLen := headerSize
 	if body != nil {
 		packLen += len(body)
 	}
-	return Protocol{PackLen: uint32(packLen), HeaderLen: uint16(headerSize), Ver: ver, Op: op, SeqId: seqId, Body: body}
+	return &Protocol{PackLen: uint32(packLen), HeaderLen: uint16(headerSize), Ver: ver, Op: op, SeqId: seqId, Body: body}
 }
 
 const (
@@ -38,11 +38,7 @@ const (
 	bodyOffset      = seqIdOffset + seqIdSize
 )
 
-//func NewProtocol(ver uint16, op uint32, seqId uint32, message string) *Protocol {
-//	return &Protocol{Ver: ver, Op: op, SeqId: seqId, Body: []byte(message)}
-//}
-
-func Encode(p Protocol) []byte {
+func (p Protocol) Encode() []byte {
 	bufSize := headerSize
 	if p.Body != nil {
 		bufSize += len(p.Body)
@@ -59,8 +55,7 @@ func Encode(p Protocol) []byte {
 	return buf
 }
 
-func Decode(buf []byte) Protocol {
-	p := Protocol{}
+func (p *Protocol) Decode(buf []byte) {
 	p.PackLen = binary.BigEndian.Uint32(buf[packLenOffset:headerLenOffset])
 	p.HeaderLen = binary.BigEndian.Uint16(buf[headerLenOffset:verOffset])
 	p.Ver = binary.BigEndian.Uint16(buf[verOffset:opOffset])
@@ -71,5 +66,4 @@ func Decode(buf []byte) Protocol {
 		p.Body = make([]byte, bodySize)
 		copy(p.Body, buf[bodyOffset:])
 	}
-	return p
 }

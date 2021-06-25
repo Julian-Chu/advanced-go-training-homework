@@ -6,8 +6,9 @@ import (
 )
 
 func TestProtocol(t *testing.T) {
-	p := CreateProto(0, 1, 2, []byte("test"))
-	res := Decode(Encode(p))
+	p := NewProto(0, 1, 2, []byte("test"))
+	res := &Protocol{}
+	res.Decode(p.Encode())
 
 	if p.Ver != res.Ver {
 		t.Errorf("decode failed, expect %s:%d, but got %d", "Ver", p.Ver, res.Ver)
