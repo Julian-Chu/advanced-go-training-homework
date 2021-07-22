@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package api.persons-service;
+
+option go_package = "persons-service/api/persons-service;persons-service";
+option java_multiple_files = true;
+option java_package = "api.persons-service";
+
+service Person {
+    rpc CreatePerson (CreatePersonRequest) returns (CreatePersonReply);
+    rpc UpdatePerson (UpdatePersonRequest) returns (UpdatePersonReply);
+    rpc DeletePerson (DeletePersonRequest) returns (DeletePersonReply);
+    rpc GetPerson (GetPersonRequest) returns (GetPersonReply);
+    rpc ListPerson (ListPersonRequest) returns (ListPersonReply);
+}
+
+message CreatePersonRequest {}
+message CreatePersonReply {}
+
+message UpdatePersonRequest {}
+message UpdatePersonReply {}
+
+message DeletePersonRequest {}
+message DeletePersonReply {}
+
+message GetPersonRequest {}
+message GetPersonReply {}
+
+message ListPersonRequest {}
+message ListPersonReply {}
