@@ -7,14 +7,17 @@ option java_multiple_files = true;
 option java_package = "api.persons-service";
 
 service Person {
-    rpc CreatePerson (CreatePersonRequest) returns (CreatePersonReply);
-    rpc UpdatePerson (UpdatePersonRequest) returns (UpdatePersonReply);
-    rpc DeletePerson (DeletePersonRequest) returns (DeletePersonReply);
-    rpc GetPerson (GetPersonRequest) returns (GetPersonReply);
-    rpc ListPerson (ListPersonRequest) returns (ListPersonReply);
+  rpc CreatePerson (CreatePersonRequest) returns (CreatePersonReply);
+  rpc UpdatePerson (UpdatePersonRequest) returns (UpdatePersonReply);
+  rpc DeletePerson (DeletePersonRequest) returns (DeletePersonReply);
+  rpc GetPerson (GetPersonRequest) returns (GetPersonReply);
+  rpc ListPerson (ListPersonRequest) returns (ListPersonReply);
 }
 
-message CreatePersonRequest {}
+message CreatePersonRequest {
+  string name = 1;
+  string email = 2;
+}
 message CreatePersonReply {}
 
 message UpdatePersonRequest {}
@@ -23,8 +26,18 @@ message UpdatePersonReply {}
 message DeletePersonRequest {}
 message DeletePersonReply {}
 
-message GetPersonRequest {}
-message GetPersonReply {}
+message GetPersonRequest {
+  string name = 1;
+}
+
+message Account{
+  string accountUUID = 1;
+  string
+}
+message GetPersonReply {
+  string name = 1;
+  Account account = 2;
+}
 
 message ListPersonRequest {}
 message ListPersonReply {}
