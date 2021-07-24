@@ -23,12 +23,11 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
-	personRepo := data.NewPersonRepo(dataData, logger)
-	personUsercase := biz.NewPersonUsercase(personRepo, logger)
-	personsService := service.NewPersonsService(personUsercase, logger)
-	httpServer := server.NewPersonHTTPServer(confServer, personsService, logger)
-	grpcServer := server.NewPersonsGRPCServer(confServer, personsService, logger)
-	app := newApp(logger, httpServer, grpcServer)
+	accountRepo := data.newAccountRepo(dataData, logger)
+	accountUsercase := biz.NewAccountUsercase(accountRepo, logger)
+	accountsService := service.NewAccountsService(accountUsercase, logger)
+	grpcServer := server.NewAccountsGRPCServer(confServer, accountsService, logger)
+	app := newApp(logger, grpcServer)
 	return app, func() {
 		cleanup()
 	}, nil

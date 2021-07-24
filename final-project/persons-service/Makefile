@@ -78,3 +78,8 @@ help:
 ps:
 	@echo 'starting persons service'
 	@go run ./cmd/personsservice -conf ./configs/config_ps.yaml
+
+# run accounts-service
+as:
+	@echo 'starting accounts service'
+	@go run ./cmd/accountsservice -conf ./configs/config_as.yaml

@@ -8,13 +8,12 @@ import (
 )
 
 type accountRepo struct {
-	//data *Data
 	log      *log.Helper
 	accounts map[string]*biz.Account
 }
 
-func newAccountRepo(log *log.Helper, accounts map[string]*biz.Account) *accountRepo {
-	return &accountRepo{log: log, accounts: accounts}
+func newAccountRepo(data *Data, logger log.Logger) biz.AccountRepo {
+	return &accountRepo{log: log.NewHelper(log.With(logger, "module", "data/person")), accounts: make(map[string]*biz.Account)}
 }
 
 func (a *accountRepo) CreateAccount(ctx context.Context, username string) (*biz.Account, error) {

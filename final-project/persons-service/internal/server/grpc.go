@@ -40,7 +40,7 @@ func NewPersonsGRPCServer(c *conf.Server, personsService *service.PersonsService
 }
 
 // NewAccountsGRPCServer new a gRPC server.
-func NewAccountsGRPCServer(c *conf.Server, accountsService *service.AccountService, logger log.Logger) *grpc.Server {
+func NewAccountsGRPCServer(c *conf.Server, accountsService *service.AccountsService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),

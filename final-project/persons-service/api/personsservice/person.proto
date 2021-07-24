@@ -25,7 +25,10 @@ message CreatePersonRequest {
   string username = 1;
   string email = 2;
 }
-message CreatePersonReply {}
+message CreatePersonReply {
+  string username = 1;
+  string accountID =2;
+}
 
 message UpdatePersonRequest {}
 message UpdatePersonReply {}

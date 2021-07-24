@@ -24,7 +24,7 @@ func (p *PersonsService) CreatePerson(ctx context.Context, request *persons.Crea
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+	return &persons.CreatePersonReply{}, nil
 }
 
 func (p *PersonsService) UpdatePerson(ctx context.Context, request *persons.UpdatePersonRequest) (*persons.UpdatePersonReply, error) {
