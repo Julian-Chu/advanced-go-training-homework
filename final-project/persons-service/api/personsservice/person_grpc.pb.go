@@ -205,5 +205,5 @@ var Person_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/persons-service/person.proto",
+	Metadata: "api/personsservice/person.proto",
 }

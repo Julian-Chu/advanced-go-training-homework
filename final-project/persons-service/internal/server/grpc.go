@@ -8,7 +8,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	"persons-service/api/persons-service"
+	"persons-service/api/personsservice"
 	"persons-service/internal/conf"
 	"persons-service/internal/service"
 )

@@ -5,14 +5,14 @@
 package main
 
 import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/google/wire"
 	"persons-service/internal/biz"
 	"persons-service/internal/conf"
 	"persons-service/internal/data"
 	"persons-service/internal/server"
 	"persons-service/internal/service"
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
-	"github.com/google/wire"
 )
 
 // initApp init kratos application.

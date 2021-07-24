@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
-	"persons-service/api/persons-service"
+	"persons-service/api/personsservice"
 	"persons-service/internal/biz"
 )
 
