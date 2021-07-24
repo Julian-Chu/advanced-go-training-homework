@@ -1,21 +1,28 @@
 syntax = "proto3";
 
-package api.persons-service;
+import "google/api/annotations.proto";
+package persons.service.v1;
 
-option go_package = "persons-service/api/persons-service;persons-service";
-option java_multiple_files = true;
-option java_package = "api.persons-service";
+option go_package = "personsservice/api/personsservice;persons";
 
 service Person {
-  rpc CreatePerson (CreatePersonRequest) returns (CreatePersonReply);
+  rpc CreatePerson (CreatePersonRequest) returns (CreatePersonReply){
+    option(google.api.http) = {
+      post: "/person",
+      body: "*"
+    };
+  };
   rpc UpdatePerson (UpdatePersonRequest) returns (UpdatePersonReply);
   rpc DeletePerson (DeletePersonRequest) returns (DeletePersonReply);
-  rpc GetPerson (GetPersonRequest) returns (GetPersonReply);
-  rpc ListPerson (ListPersonRequest) returns (ListPersonReply);
+  rpc GetPerson (GetPersonRequest) returns (GetPersonReply){
+    option(google.api.http) = {
+      get: "/person/{email}"
+    };
+  };
 }
 
 message CreatePersonRequest {
-  string name = 1;
+  string username = 1;
   string email = 2;
 }
 message CreatePersonReply {}
@@ -27,17 +34,15 @@ message DeletePersonRequest {}
 message DeletePersonReply {}
 
 message GetPersonRequest {
-  string name = 1;
+  string email = 1;
 }
 
 message Account{
   string accountUUID = 1;
-  string
+  string personID = 2;
 }
 message GetPersonReply {
-  string name = 1;
-  Account account = 2;
+  string username = 1;
+  string  email = 2;
+  Account account = 3;
 }
-
-message ListPersonRequest {}
-message ListPersonReply {}

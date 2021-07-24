@@ -1,9 +1,6 @@
 package server
 
 import (
-	v1 "persons-service/api/helloworld/v1"
-	"persons-service/internal/conf"
-	"persons-service/internal/service"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
@@ -11,10 +8,15 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"persons-service/api/persons-service"
+
+	//persons "persons-service/api/persons-service"
+	"persons-service/internal/conf"
+	"persons-service/internal/service"
 )
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, personsService *service.PersonsService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -34,6 +36,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterGreeterHTTPServer(srv, greeter)
+	//srv.HandlePrefix("/", persons.NewPersonHTTPClient(todosvc, m))
+	persons.RegisterPersonHTTPServer(srv, personsService)
 	return srv
 }
