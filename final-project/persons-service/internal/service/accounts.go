@@ -19,7 +19,13 @@ func NewAccountsService(uc *biz.AccountUsercase, logger log.Logger) *AccountsSer
 }
 
 func (s *AccountsService) CreateAccount(ctx context.Context, req *pb.CreateAccountRequest) (*pb.CreateAccountReply, error) {
-	return &pb.CreateAccountReply{}, nil
+	account, err := s.uc.CreateAccount(ctx, req.Username)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.CreateAccountReply{
+		AccountID: account.ID,
+	}, nil
 }
 func (s *AccountsService) UpdateAccount(ctx context.Context, req *pb.UpdateAccountRequest) (*pb.UpdateAccountReply, error) {
 	return &pb.UpdateAccountReply{}, nil

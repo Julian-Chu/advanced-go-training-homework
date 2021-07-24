@@ -12,7 +12,7 @@ type accountRepo struct {
 	accounts map[string]*biz.Account
 }
 
-func newAccountRepo(data *Data, logger log.Logger) biz.AccountRepo {
+func NewAccountRepo(data *Data, logger log.Logger) biz.AccountRepo {
 	return &accountRepo{log: log.NewHelper(log.With(logger, "module", "data/person")), accounts: make(map[string]*biz.Account)}
 }
 

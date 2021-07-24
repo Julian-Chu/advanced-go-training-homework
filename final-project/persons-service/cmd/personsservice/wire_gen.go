@@ -23,7 +23,8 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
-	personRepo := data.NewPersonRepo(dataData, logger)
+	accountClient := data.NewAccountsServiceClient()
+	personRepo := data.NewPersonRepo(dataData, logger, accountClient)
 	personUsercase := biz.NewPersonUsercase(personRepo, logger)
 	personsService := service.NewPersonsService(personUsercase, logger)
 	httpServer := server.NewPersonHTTPServer(confServer, personsService, logger)

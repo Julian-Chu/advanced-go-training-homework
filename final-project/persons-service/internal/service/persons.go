@@ -20,11 +20,14 @@ func (p *PersonsService) CreatePerson(ctx context.Context, request *persons.Crea
 		Username: request.Username,
 		Email:    request.Email,
 	}
-	err := p.uc.Create(ctx, person)
+	accountID, err := p.uc.Create(ctx, person)
 	if err != nil {
 		return nil, err
 	}
-	return &persons.CreatePersonReply{}, nil
+	return &persons.CreatePersonReply{
+		Username:  request.Username,
+		AccountID: accountID,
+	}, nil
 }
 
 func (p *PersonsService) UpdatePerson(ctx context.Context, request *persons.UpdatePersonRequest) (*persons.UpdatePersonReply, error) {

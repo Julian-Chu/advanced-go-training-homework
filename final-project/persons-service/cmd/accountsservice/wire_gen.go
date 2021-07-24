@@ -23,7 +23,7 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
-	accountRepo := data.newAccountRepo(dataData, logger)
+	accountRepo := data.NewAccountRepo(dataData, logger)
 	accountUsercase := biz.NewAccountUsercase(accountRepo, logger)
 	accountsService := service.NewAccountsService(accountUsercase, logger)
 	grpcServer := server.NewAccountsGRPCServer(confServer, accountsService, logger)

@@ -3,13 +3,15 @@ package data
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
+	accounts "persons-service/api/accountsservice"
 	"persons-service/internal/biz"
 )
 
 type personRepo struct {
 	//data *Data
-	log     *log.Helper
-	persons map[string]*biz.Person
+	log           *log.Helper
+	persons       map[string]*biz.Person
+	accountClient accounts.AccountClient
 }
 
 func (p *personRepo) GetPerson(ctx context.Context, username string) (*biz.Person, error) {
@@ -19,14 +21,18 @@ func (p *personRepo) GetPerson(ctx context.Context, username string) (*biz.Perso
 	return nil, biz.ErrUserNotFound
 }
 
-func NewPersonRepo(data *Data, logger log.Logger) biz.PersonRepo {
-	return &personRepo{log: log.NewHelper(log.With(logger, "module", "data/person")), persons: make(map[string]*biz.Person)}
+func NewPersonRepo(data *Data, logger log.Logger, client accounts.AccountClient) biz.PersonRepo {
+	return &personRepo{log: log.NewHelper(log.With(logger, "module", "data/person")), persons: make(map[string]*biz.Person), accountClient: client}
 }
 
-func (p *personRepo) CreatePerson(ctx context.Context, person *biz.Person) error {
+func (p *personRepo) CreatePerson(ctx context.Context, person *biz.Person) (accountID string, err error) {
 	if _, ok := p.persons[person.Username]; ok {
-		return biz.ErrUserExisted
+		return "", biz.ErrUserExisted
+	}
+	accountReply, err := p.accountClient.CreateAccount(ctx, &accounts.CreateAccountRequest{Username: person.Username})
+	if err != nil {
+		return "", err
 	}
 	p.persons[person.Username] = person
-	return nil
+	return accountReply.AccountID, nil
 }
