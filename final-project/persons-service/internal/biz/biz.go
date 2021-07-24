@@ -2,5 +2,8 @@ package biz
 
 import "github.com/google/wire"
 
-// ProviderSet is biz providers.
-var ProviderSet = wire.NewSet(NewPersonUsercase)
+// ProviderSetPerson is Person biz providers.
+var ProviderSetPerson = wire.NewSet(NewPersonUsercase)
+
+// ProviderSetAccount is Account biz providers.
+var ProviderSetAccount = wire.NewSet(NewAccountUsercase)

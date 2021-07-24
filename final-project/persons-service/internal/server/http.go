@@ -8,15 +8,15 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	"persons-service/api/personsservice"
+	persons "persons-service/api/personsservice"
 
 	//persons "personsservice/api/personsservice"
 	"persons-service/internal/conf"
 	"persons-service/internal/service"
 )
 
-// NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, personsService *service.PersonsService, logger log.Logger) *http.Server {
+// NewPersonHTTPServer new a HTTP server.
+func NewPersonHTTPServer(c *conf.Server, personsService *service.PersonsService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),

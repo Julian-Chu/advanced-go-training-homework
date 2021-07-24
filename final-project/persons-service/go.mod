@@ -8,6 +8,7 @@ require (
 	github.com/fatih/color v1.12.0 // indirect
 	github.com/go-kratos/kratos/cmd/kratos/v2 v2.0.0-20210723163058-cb7fc2d72a46 // indirect
 	github.com/go-kratos/kratos/v2 v2.0.0
+	github.com/google/uuid v1.2.0 // indirect
 	github.com/google/wire v0.5.0
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.13 // indirect

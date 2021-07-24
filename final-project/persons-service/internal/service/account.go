@@ -10,7 +10,7 @@ type AccountService struct {
 	pb.UnimplementedAccountServer
 }
 
-func NewAccountService() *AccountService {
+func NewAccountsService() *AccountService {
 	return &AccountService{}
 }
 

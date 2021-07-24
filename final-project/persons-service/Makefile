@@ -73,3 +73,8 @@ help:
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help
+
+# run persons-service
+ps:
+	@echo 'starting persons service'
+	@go run ./cmd/personsservice -conf ./configs/config_ps.yaml

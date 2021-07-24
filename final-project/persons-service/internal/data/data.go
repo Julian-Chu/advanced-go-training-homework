@@ -6,8 +6,10 @@ import (
 	"persons-service/internal/conf"
 )
 
-// ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewPersonRepo)
+// ProviderSetPerson is data providers.
+var ProviderSetPerson = wire.NewSet(NewData, NewPersonRepo)
+
+var ProviderSetAccount = wire.NewSet(NewData, newAccountRepo)
 
 // Data .
 type Data struct {
