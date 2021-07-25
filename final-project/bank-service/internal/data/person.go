@@ -16,8 +16,13 @@ type personRepo struct {
 	producer      sarama.AsyncProducer
 }
 
-func (p *personRepo) GetPerson(_ context.Context, username string) (*biz.Person, error) {
+func (p *personRepo) GetPerson(ctx context.Context, username string) (*biz.Person, error) {
 	if person, ok := p.persons[username]; ok {
+		reply, err := p.accountClient.GetAccount(ctx, &accounts.GetAccountRequest{Username: username})
+		if err != nil {
+			return nil, err
+		}
+		person.AccountID = reply.GetAccountID()
 		return person, nil
 	}
 	return nil, biz.ErrUserNotFound

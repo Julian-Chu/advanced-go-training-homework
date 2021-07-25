@@ -27,7 +27,7 @@ message CreatePersonRequest {
 }
 message CreatePersonReply {
   string username = 1;
-  string accountID =2;
+  string accountID = 2;
 }
 
 message UpdatePersonRequest {}
@@ -40,12 +40,8 @@ message GetPersonRequest {
   string email = 1;
 }
 
-message Account{
-  string accountUUID = 1;
-  string personID = 2;
-}
 message GetPersonReply {
   string username = 1;
-  string  email = 2;
-  Account account = 3;
+  string email = 2;
+  string accountID = 3;
 }

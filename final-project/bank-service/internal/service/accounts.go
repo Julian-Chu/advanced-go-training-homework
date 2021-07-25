@@ -34,7 +34,11 @@ func (s *AccountsService) DeleteAccount(ctx context.Context, req *pb.DeleteAccou
 	return &pb.DeleteAccountReply{}, nil
 }
 func (s *AccountsService) GetAccount(ctx context.Context, req *pb.GetAccountRequest) (*pb.GetAccountReply, error) {
-	return &pb.GetAccountReply{}, nil
+	account, err := s.uc.GetAccount(ctx, req.GetUsername())
+	if err != nil {
+		return nil, err
+	}
+	return &pb.GetAccountReply{AccountID: account.ID}, nil
 }
 func (s *AccountsService) ListAccount(ctx context.Context, req *pb.ListAccountRequest) (*pb.ListAccountReply, error) {
 	return &pb.ListAccountReply{}, nil

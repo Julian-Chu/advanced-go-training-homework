@@ -46,9 +46,9 @@ func (p *PersonsService) GetPerson(ctx context.Context, request *persons.GetPers
 		return nil, err
 	}
 	rep := &persons.GetPersonReply{
-		Username: person.Username,
-		Email:    person.Email,
-		Account:  nil,
+		Username:  person.Username,
+		Email:     person.Email,
+		AccountID: person.AccountID,
 	}
 	return rep, nil
 }

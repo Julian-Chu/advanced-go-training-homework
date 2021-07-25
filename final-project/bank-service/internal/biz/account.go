@@ -28,6 +28,10 @@ func NewAccountUsercase(repo AccountRepo, logger log.Logger) *AccountUsercase {
 	return &AccountUsercase{repo: repo, log: log.NewHelper(log.With(logger, "module", "usecase/account"))}
 }
 
-func (uc AccountUsercase) CreateAccount(ctx context.Context, username string) (*Account, error) {
+func (uc *AccountUsercase) CreateAccount(ctx context.Context, username string) (*Account, error) {
 	return uc.repo.CreateAccount(ctx, username)
+}
+
+func (uc *AccountUsercase) GetAccount(ctx context.Context, username string) (*Account, error) {
+	return uc.repo.GetAccount(ctx, username)
 }

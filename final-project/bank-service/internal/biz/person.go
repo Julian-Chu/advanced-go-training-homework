@@ -10,8 +10,9 @@ var ErrUserExisted = errors.New("user existed")
 var ErrUserNotFound = errors.New("user not found")
 
 type Person struct {
-	Username string
-	Email    string
+	Username  string
+	Email     string
+	AccountID string
 }
 
 type PersonRepo interface {
