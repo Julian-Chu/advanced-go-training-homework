@@ -1,6 +1,10 @@
 package server
 
 import (
+	accounts "bankservice/api/accountsservice"
+	"bankservice/api/personsservice"
+	"bankservice/internal/conf"
+	"bankservice/internal/service"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
@@ -8,10 +12,6 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	accounts "persons-service/api/accountsservice"
-	"persons-service/api/personsservice"
-	"persons-service/internal/conf"
-	"persons-service/internal/service"
 )
 
 // NewPersonsGRPCServer new a gRPC server.

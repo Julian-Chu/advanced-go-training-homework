@@ -1,4 +1,4 @@
-module persons-service
+module bankservice
 
 go 1.15
 

@@ -1,6 +1,7 @@
 package server
 
 import (
+	persons "bankservice/api/personsservice"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/metrics"
@@ -8,11 +9,10 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	persons "persons-service/api/personsservice"
 
 	//persons "personsservice/api/personsservice"
-	"persons-service/internal/conf"
-	"persons-service/internal/service"
+	"bankservice/internal/conf"
+	"bankservice/internal/service"
 )
 
 // NewPersonHTTPServer new a HTTP server.

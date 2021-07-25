@@ -1,11 +1,11 @@
 package service
 
 import (
+	"bankservice/internal/biz"
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	"persons-service/internal/biz"
 
-	pb "persons-service/api/accountsservice"
+	pb "bankservice/api/accountsservice"
 )
 
 type AccountsService struct {

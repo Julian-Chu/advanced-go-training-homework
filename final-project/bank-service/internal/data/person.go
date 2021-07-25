@@ -1,10 +1,10 @@
 package data
 
 import (
+	accounts "bankservice/api/accountsservice"
+	"bankservice/internal/biz"
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	accounts "persons-service/api/accountsservice"
-	"persons-service/internal/biz"
 )
 
 type personRepo struct {
