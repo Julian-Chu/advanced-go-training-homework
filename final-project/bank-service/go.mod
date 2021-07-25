@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.2.15 // indirect
+	github.com/Shopify/sarama v1.29.1 // indirect
 	github.com/emicklei/proto v1.9.1 // indirect
 	github.com/fatih/color v1.12.0 // indirect
 	github.com/go-kratos/kratos/cmd/kratos/v2 v2.0.0-20210723163058-cb7fc2d72a46 // indirect
@@ -20,6 +21,10 @@ require (
 	google.golang.org/genproto v0.0.0-20210629200056-84d6f6074151
 	google.golang.org/grpc v1.39.0
 	google.golang.org/protobuf v1.27.1
-	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
+	gopkg.in/jcmturner/aescts.v1 v1.0.1 // indirect
+	gopkg.in/jcmturner/dnsutils.v1 v1.0.1 // indirect
+	gopkg.in/jcmturner/goidentity.v3 v3.0.0 // indirect
+	gopkg.in/jcmturner/gokrb5.v7 v7.2.3 // indirect
+	gopkg.in/jcmturner/rpc.v1 v1.1.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

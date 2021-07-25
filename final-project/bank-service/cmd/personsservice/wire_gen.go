@@ -24,7 +24,8 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 		return nil, nil, err
 	}
 	accountClient := data.NewAccountsServiceClient()
-	personRepo := data.NewPersonRepo(dataData, logger, accountClient)
+	asyncProducer := data.NewKafkaProducer()
+	personRepo := data.NewPersonRepo(dataData, logger, accountClient, asyncProducer)
 	personUsercase := biz.NewPersonUsercase(personRepo, logger)
 	personsService := service.NewPersonsService(personUsercase, logger)
 	httpServer := server.NewPersonHTTPServer(confServer, personsService, logger)

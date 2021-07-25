@@ -11,7 +11,7 @@ import (
 )
 
 // ProviderSetPerson is data providers.
-var ProviderSetPerson = wire.NewSet(NewData, NewAccountsServiceClient, NewPersonRepo)
+var ProviderSetPerson = wire.NewSet(NewData, NewKafkaProducer, NewAccountsServiceClient, NewPersonRepo)
 
 var ProviderSetAccount = wire.NewSet(NewData, NewAccountRepo)
 

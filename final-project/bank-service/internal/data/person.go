@@ -4,6 +4,7 @@ import (
 	accounts "bankservice/api/accountsservice"
 	"bankservice/internal/biz"
 	"context"
+	"github.com/Shopify/sarama"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -12,27 +13,41 @@ type personRepo struct {
 	log           *log.Helper
 	persons       map[string]*biz.Person
 	accountClient accounts.AccountClient
+	producer      sarama.AsyncProducer
 }
 
-func (p *personRepo) GetPerson(ctx context.Context, username string) (*biz.Person, error) {
+func (p *personRepo) GetPerson(_ context.Context, username string) (*biz.Person, error) {
 	if person, ok := p.persons[username]; ok {
 		return person, nil
 	}
 	return nil, biz.ErrUserNotFound
 }
 
-func NewPersonRepo(data *Data, logger log.Logger, client accounts.AccountClient) biz.PersonRepo {
-	return &personRepo{log: log.NewHelper(log.With(logger, "module", "data/person")), persons: make(map[string]*biz.Person), accountClient: client}
+func NewPersonRepo(data *Data, logger log.Logger, client accounts.AccountClient, producer sarama.AsyncProducer) biz.PersonRepo {
+	return &personRepo{log: log.NewHelper(log.With(logger, "module", "data/person")), persons: make(map[string]*biz.Person), accountClient: client, producer: producer}
 }
 
-func (p *personRepo) CreatePerson(ctx context.Context, person *biz.Person) (accountID string, err error) {
+func (p *personRepo) CreatePerson(_ context.Context, person *biz.Person) (err error) {
 	if _, ok := p.persons[person.Username]; ok {
-		return "", biz.ErrUserExisted
+		return biz.ErrUserExisted
 	}
-	accountReply, err := p.accountClient.CreateAccount(ctx, &accounts.CreateAccountRequest{Username: person.Username})
+	//accountReply, err := p.accountClient.CreateAccount(ctx, &accounts.CreateAccountRequest{Username: person.Username})
+	p.producer.Input() <- &sarama.ProducerMessage{
+		Topic: "applications",
+		Value: sarama.StringEncoder(person.Username),
+	}
 	if err != nil {
-		return "", err
+		return err
 	}
 	p.persons[person.Username] = person
-	return accountReply.AccountID, nil
+	return nil
+}
+
+func NewKafkaProducer() sarama.AsyncProducer {
+	c := sarama.NewConfig()
+	p, err := sarama.NewAsyncProducer([]string{"localhost:9092"}, c)
+	if err != nil {
+		panic(err)
+	}
+	return p
 }

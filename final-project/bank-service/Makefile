@@ -84,6 +84,10 @@ as:
 	@echo 'starting accounts service'
 	@go run ./cmd/accountsservice -conf ./configs/config_as.yaml
 
+# run application-reviewer
+rv:
+	@echo "starting reviewer"
+	@go run ./cmd/reviewer
 # infra-up
 infra-up:
 	@sudo docker-compose up -d

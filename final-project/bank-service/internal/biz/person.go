@@ -15,7 +15,7 @@ type Person struct {
 }
 
 type PersonRepo interface {
-	CreatePerson(ctx context.Context, person *Person) (string, error)
+	CreatePerson(ctx context.Context, person *Person) error
 	GetPerson(ctx context.Context, username string) (*Person, error)
 }
 
@@ -28,7 +28,7 @@ func NewPersonUsercase(repo PersonRepo, logger log.Logger) *PersonUsercase {
 	return &PersonUsercase{repo: repo, log: log.NewHelper(log.With(logger, "module", "usecase/person"))}
 }
 
-func (uc *PersonUsercase) Create(ctx context.Context, p *Person) (string, error) {
+func (uc *PersonUsercase) Create(ctx context.Context, p *Person) error {
 	return uc.repo.CreatePerson(ctx, p)
 }
 
