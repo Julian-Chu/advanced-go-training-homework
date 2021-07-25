@@ -1,7 +1,13 @@
 package main
 
 import (
+	accounts "bankservice/api/accountsservice"
 	"flag"
+	"fmt"
+	"go.opentelemetry.io/otel/exporters/jaeger"
+	"go.opentelemetry.io/otel/sdk/resource"
+	tracesdk "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 	"os"
 
 	"bankservice/internal/conf"
@@ -60,13 +66,16 @@ func main() {
 	if err := c.Load(); err != nil {
 		panic(err)
 	}
-
+	tp, err := tracerProvider("http://localhost:14268/api/traces")
+	if err != nil {
+		fmt.Println(err)
+	}
 	var bc conf.Bootstrap
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
 
-	app, cleanup, err := initApp(bc.Server, bc.Data, logger)
+	app, cleanup, err := initApp(bc.Server, bc.Data, logger, tp)
 	if err != nil {
 		panic(err)
 	}
@@ -76,4 +85,24 @@ func main() {
 	if err := app.Run(); err != nil {
 		panic(err)
 	}
+}
+
+func tracerProvider(url string) (*tracesdk.TracerProvider, error) {
+	// Create the Jaeger exporter
+	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(url)))
+	if err != nil {
+		return nil, err
+	}
+	tp := tracesdk.NewTracerProvider(
+		tracesdk.WithSampler(tracesdk.AlwaysSample()),
+		// Always be sure to batch in production.
+		tracesdk.WithBatcher(exp),
+		// Record information about this application in an Resource.
+		tracesdk.WithResource(resource.NewSchemaless(
+			semconv.ServiceNameKey.String(accounts.Account_ServiceDesc.ServiceName),
+			//attribute.String("environment", "development"),
+			//attribute.Int64("ID", 1),
+		)),
+	)
+	return tp, nil
 }

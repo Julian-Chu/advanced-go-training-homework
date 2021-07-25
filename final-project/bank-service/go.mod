@@ -3,28 +3,17 @@ module bankservice
 go 1.15
 
 require (
-	github.com/AlecAivazis/survey/v2 v2.2.15 // indirect
-	github.com/Shopify/sarama v1.29.1 // indirect
-	github.com/emicklei/proto v1.9.1 // indirect
-	github.com/fatih/color v1.12.0 // indirect
-	github.com/go-kratos/kratos/cmd/kratos/v2 v2.0.0-20210723163058-cb7fc2d72a46 // indirect
+	github.com/Shopify/sarama v1.29.1
 	github.com/go-kratos/kratos/v2 v2.0.0
-	github.com/google/uuid v1.2.0 // indirect
+	github.com/google/uuid v1.2.0
 	github.com/google/wire v0.5.0
-	github.com/kr/text v0.2.0 // indirect
-	github.com/mattn/go-isatty v0.0.13 // indirect
-	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
-	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
-	github.com/spf13/cobra v1.2.1 // indirect
+	github.com/stretchr/objx v0.1.1 // indirect
+	go.opentelemetry.io/otel v1.0.0-RC1
+	go.opentelemetry.io/otel/exporters/jaeger v1.0.0-RC1
+	go.opentelemetry.io/otel/sdk v1.0.0-RC1
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
-	golang.org/x/term v0.0.0-20210615171337-6886f2dfbf5b // indirect
 	google.golang.org/genproto v0.0.0-20210629200056-84d6f6074151
 	google.golang.org/grpc v1.39.0
 	google.golang.org/protobuf v1.27.1
-	gopkg.in/jcmturner/aescts.v1 v1.0.1 // indirect
-	gopkg.in/jcmturner/dnsutils.v1 v1.0.1 // indirect
-	gopkg.in/jcmturner/goidentity.v3 v3.0.0 // indirect
-	gopkg.in/jcmturner/gokrb5.v7 v7.2.3 // indirect
-	gopkg.in/jcmturner/rpc.v1 v1.1.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

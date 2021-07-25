@@ -9,6 +9,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 
 	//persons "personsservice/api/personsservice"
 	"bankservice/internal/conf"
@@ -16,11 +17,12 @@ import (
 )
 
 // NewPersonHTTPServer new a HTTP server.
-func NewPersonHTTPServer(c *conf.Server, personsService *service.PersonsService, logger log.Logger) *http.Server {
+func NewPersonHTTPServer(c *conf.Server, personsService *service.PersonsService, logger log.Logger, tp *tracesdk.TracerProvider) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
-			tracing.Server(),
+			tracing.Server(
+				tracing.WithTracerProvider(tp)),
 			logging.Server(logger),
 			metrics.Server(),
 			validate.Validator(),

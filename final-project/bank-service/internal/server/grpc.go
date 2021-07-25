@@ -12,14 +12,16 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/middleware/validate"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
+	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 )
 
 // NewPersonsGRPCServer new a gRPC server.
-func NewPersonsGRPCServer(c *conf.Server, personsService *service.PersonsService, logger log.Logger) *grpc.Server {
+func NewPersonsGRPCServer(c *conf.Server, personsService *service.PersonsService, logger log.Logger, tp *tracesdk.TracerProvider) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
-			tracing.Server(),
+			tracing.Server(
+				tracing.WithTracerProvider(tp)),
 			logging.Server(logger),
 			metrics.Server(),
 			validate.Validator(),
@@ -40,11 +42,12 @@ func NewPersonsGRPCServer(c *conf.Server, personsService *service.PersonsService
 }
 
 // NewAccountsGRPCServer new a gRPC server.
-func NewAccountsGRPCServer(c *conf.Server, accountsService *service.AccountsService, logger log.Logger) *grpc.Server {
+func NewAccountsGRPCServer(c *conf.Server, accountsService *service.AccountsService, logger log.Logger, tp *tracesdk.TracerProvider) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
-			tracing.Server(),
+			tracing.Server(
+				tracing.WithTracerProvider(tp)),
 			logging.Server(logger),
 			metrics.Server(),
 			validate.Validator(),

@@ -13,12 +13,13 @@ import (
 	"bankservice/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
+	"go.opentelemetry.io/otel/sdk/trace"
 )
 
 // Injectors from wire.go:
 
 // initApp init kratos application.
-func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
+func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger, traceTracerProvider *trace.TracerProvider) (*kratos.App, func(), error) {
 	dataData, cleanup, err := data.NewData(confData, logger)
 	if err != nil {
 		return nil, nil, err
@@ -26,7 +27,7 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	accountRepo := data.NewAccountRepo(dataData, logger)
 	accountUsercase := biz.NewAccountUsercase(accountRepo, logger)
 	accountsService := service.NewAccountsService(accountUsercase, logger)
-	grpcServer := server.NewAccountsGRPCServer(confServer, accountsService, logger)
+	grpcServer := server.NewAccountsGRPCServer(confServer, accountsService, logger, traceTracerProvider)
 	app := newApp(logger, grpcServer)
 	return app, func() {
 		cleanup()
