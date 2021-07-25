@@ -83,3 +83,17 @@ ps:
 as:
 	@echo 'starting accounts service'
 	@go run ./cmd/accountsservice -conf ./configs/config_as.yaml
+
+# infra-up
+infra-up:
+	@sudo docker-compose up -d
+	@sudo docker-compose exec kafka /opt/bitnami/kafka/bin/kafka-topics.sh \
+            --create \
+			--zookeeper zookeeper \
+            --replication-factor 1 \
+            --partitions 1 \
+            --topic applications
+
+# infra-down
+infra-down:
+	@sudo docker-compose down
