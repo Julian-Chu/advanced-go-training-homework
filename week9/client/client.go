@@ -14,7 +14,9 @@ func main() {
 	checkErr(err)
 	defer conn.Close()
 	p := week9.NewProto(1, 2, 3, []byte("hello"))
-	_, err = conn.Write(p.Encode())
+	buf := p.Encode()
+	fmt.Println("package len:", len(buf))
+	_, err = conn.Write(buf)
 	checkErr(err)
 }
 
