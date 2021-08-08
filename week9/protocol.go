@@ -75,47 +75,35 @@ func NewReader(conn net.Conn) *Reader {
 func (r *Reader) Decode() (*Protocol, error) {
 	p := &Protocol{}
 	reader := bufio.NewReader(r.conn)
-	buf := make([]byte, packLenSize)
-	_, err := reader.Read(buf)
-	if err != nil {
-		return nil, err
+	var err error
+	Read := func(buf []byte) {
+		if err != nil {
+			return
+		}
+		_, err = reader.Read(buf)
 	}
+	buf := make([]byte, packLenSize)
+	Read(buf)
 	packLen := binary.BigEndian.Uint32(buf)
 
 	buf = make([]byte, headerLenSize)
-	_, err = reader.Read(buf)
-	if err != nil {
-		return nil, err
-	}
-	headerLen := binary.BigEndian.Uint16(buf)
-	_ = headerLen
-	if err != nil {
-		return nil, err
-	}
+	Read(buf)
+	//headerLen := binary.BigEndian.Uint16(buf)
 	buf = make([]byte, verSize)
-	_, err = reader.Read(buf)
-	if err != nil {
-		return nil, err
-	}
+	Read(buf)
 	p.Ver = binary.BigEndian.Uint16(buf)
 
 	buf = make([]byte, opSize)
-	_, err = reader.Read(buf)
-	if err != nil {
-		return nil, err
-	}
+	Read(buf)
 	p.Op = binary.BigEndian.Uint32(buf)
 
 	buf = make([]byte, seqIdSize)
-	_, err = reader.Read(buf)
+	Read(buf)
 	p.SeqId = binary.BigEndian.Uint32(buf)
 	bodySize := packLen - uint32(headerSize)
 	if bodySize > 0 {
 		p.Body = make([]byte, int(bodySize))
-		_, err = reader.Read(p.Body)
-		if err != nil {
-			return nil, err
-		}
+		Read(p.Body)
 	}
-	return p, nil
+	return p, err
 }

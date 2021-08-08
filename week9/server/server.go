@@ -18,14 +18,10 @@ func main() {
 			fmt.Printf("error: %s\n", err.Error())
 			return
 		}
-		//buf := make([]byte, 1024)
-		//_, err = conn.Read(buf)
 		reader := week9.NewReader(conn)
 		p, err := reader.Decode()
 		conn.Close()
 		checkErr(err)
-		//p := &week9.Protocol{}
-		//p.Decode(buf)
 		fmt.Println(p)
 		fmt.Println(p.Ver)
 		fmt.Println(p.Op)
