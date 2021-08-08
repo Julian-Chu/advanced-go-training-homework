@@ -18,15 +18,15 @@ func main() {
 			fmt.Printf("error: %s\n", err.Error())
 			return
 		}
-		reader := week9.NewReader(conn)
+		reader, close := week9.NewReader(conn)
 		p, err := reader.Decode()
-		conn.Close()
 		checkErr(err)
-		fmt.Println(p)
-		fmt.Println(p.Ver)
-		fmt.Println(p.Op)
-		fmt.Println(p.SeqId)
-		fmt.Println(string(p.Body))
+		err = close()
+		fmt.Println(err)
+		fmt.Printf("version: %d\n", p.Ver)
+		fmt.Printf("operation: %d\n", p.Op)
+		fmt.Printf("sequence ID: %d\n\n", p.SeqId)
+		fmt.Printf("message: %s\n\n", string(p.Body))
 	}
 }
 

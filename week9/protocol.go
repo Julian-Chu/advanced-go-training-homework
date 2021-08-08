@@ -68,8 +68,8 @@ type Reader struct {
 	conn net.Conn
 }
 
-func NewReader(conn net.Conn) *Reader {
-	return &Reader{conn: conn}
+func NewReader(conn net.Conn) (*Reader, func() error) {
+	return &Reader{conn: conn}, conn.Close
 }
 
 func (r *Reader) Decode() (*Protocol, error) {
