@@ -1,6 +1,10 @@
 package week9
 
-import "encoding/binary"
+import (
+	"bufio"
+	"encoding/binary"
+	"net"
+)
 
 type Protocol struct {
 	Ver   uint16
@@ -58,4 +62,48 @@ func (p *Protocol) Decode(buf []byte) {
 		p.Body = make([]byte, bodySize)
 		copy(p.Body, buf[bodyOffset:])
 	}
+}
+
+type Reader struct {
+	conn net.Conn
+}
+
+func NewReader(conn net.Conn) (*Reader, func() error) {
+	return &Reader{conn: conn}, conn.Close
+}
+
+func (r *Reader) Decode() (*Protocol, error) {
+	p := &Protocol{}
+	reader := bufio.NewReader(r.conn)
+	var err error
+	Read := func(buf []byte) {
+		if err != nil {
+			return
+		}
+		_, err = reader.Read(buf)
+	}
+	buf := make([]byte, packLenSize)
+	Read(buf)
+	packLen := binary.BigEndian.Uint32(buf)
+
+	buf = make([]byte, headerLenSize)
+	Read(buf)
+	//headerLen := binary.BigEndian.Uint16(buf)
+	buf = make([]byte, verSize)
+	Read(buf)
+	p.Ver = binary.BigEndian.Uint16(buf)
+
+	buf = make([]byte, opSize)
+	Read(buf)
+	p.Op = binary.BigEndian.Uint32(buf)
+
+	buf = make([]byte, seqIdSize)
+	Read(buf)
+	p.SeqId = binary.BigEndian.Uint32(buf)
+	bodySize := packLen - uint32(headerSize)
+	if bodySize > 0 {
+		p.Body = make([]byte, int(bodySize))
+		Read(p.Body)
+	}
+	return p, err
 }
